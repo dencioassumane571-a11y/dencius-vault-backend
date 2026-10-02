@@ -1,0 +1,12 @@
+{
+  "name": "dencius-vault-backend",
+  "version": "1.0.0",
+  "description": "Backend do Dencius Vault",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
