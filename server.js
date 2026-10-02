@@ -6,24 +6,34 @@ const PORT = process.env.PORT || 3000;
 const produtos = [
     {
         id: 1,
-        nome: "Licença de Software",
-        descricao: "Licença digital para profissionais.",
-        preco: 10,
-        moeda: "USD"
+        codigo: "unlock",
+        nome: "Unlock Tool",
+        descricao: "Licença de software para técnicos.",
+        preco: 500,
+        moeda: "MZN"
     },
     {
         id: 2,
-        nome: "Ferramenta Premium",
-        descricao: "Ferramenta digital para técnicos.",
-        preco: 15,
-        moeda: "USD"
+        codigo: "tsm",
+        nome: "TSM Tool",
+        descricao: "Licença de software para reparação de smartphones.",
+        preco: 700,
+        moeda: "MZN"
+    },
+    {
+        id: 3,
+        codigo: "amt",
+        nome: "AMT Tool",
+        descricao: "Licença de software para técnicos.",
+        preco: 1000,
+        moeda: "MZN"
     }
 ];
 
 const server = http.createServer((req, res) => {
     const caminho = url.parse(req.url, true).pathname;
 
-    res.setHeader("Content-Type", "application/json");
+    res.setHeader("Content-Type", "application/json; charset=utf-8");
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -54,8 +64,11 @@ const server = http.createServer((req, res) => {
 
     // Produto específico
     if (req.method === "GET" && caminho.startsWith("/produtos/")) {
-        const id = Number(caminho.split("/")[2]);
-        const produto = produtos.find(p => p.id === id);
+        const identificador = caminho.split("/")[2];
+
+        const produto = produtos.find(
+            p => p.id === Number(identificador) || p.codigo === identificador
+        );
 
         if (!produto) {
             res.writeHead(404);
@@ -105,6 +118,7 @@ const server = http.createServer((req, res) => {
                 const novoPedido = {
                     id: Date.now(),
                     produtoId: produto.id,
+                    codigo: produto.codigo,
                     produto: produto.nome,
                     preco: produto.preco,
                     moeda: produto.moeda,
@@ -133,5 +147,7 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, () => {
-    console.log(`Dencius Vault Backend iniciado na porta ${PORT}`);
+    console.log(
+        `Dencius Vault Backend iniciado na porta ${PORT}`
+    );
 });
